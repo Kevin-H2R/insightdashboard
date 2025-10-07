@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String?
+  datasets  Dataset[]
+  createdAt DateTime  @default(now())
+}
+
+model Dataset {
+  id          String     @id @default(cuid())
+  name        String
+  description String?
+  reviews     Review[]
+  analysis    Analysis?
+  userId      String
+  user        User       @relation(fields: [userId], references: [id])
+  createdAt   DateTime   @default(now())
+}
+
+model Review {
+  id          String   @id @default(cuid())
+  productName String
+  text        String
+  rating      Int?
+  sentiment   String?  // optional per-review AI sentiment
+  datasetId   String
+  dataset     Dataset  @relation(fields: [datasetId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model Analysis {
+  id          String   @id @default(cuid())
+  summary     String
+  positives   String[]
+  negatives   String[]
+  sentiment   Json      // e.g. { positive: 60, neutral: 20, negative: 20 }
+  datasetId   String    @unique
+  dataset     Dataset   @relation(fields: [datasetId], references: [id])
+  createdAt   DateTime  @default(now())
+}
