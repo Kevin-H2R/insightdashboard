@@ -1,3 +1,4 @@
+import AnalyzeButton from '@/components/AnalyzeButton'
 import { prisma } from '@/lib/db'
 
 export default async function DashboardPage() {
@@ -22,6 +23,7 @@ export default async function DashboardPage() {
             <p className="text-xs text-gray-400">
               Created {new Date(dataset.createdAt).toLocaleString()}
             </p>
+            <AnalyzeButton datasetId={dataset.id} />
           </div>
         ))}
       </div>

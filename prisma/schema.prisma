@@ -50,7 +50,10 @@ model Analysis {
   summary     String
   positives   String[]
   negatives   String[]
-  sentiment   Json      // e.g. { positive: 60, neutral: 20, negative: 20 }
+  positiveCount Int
+  neutralCount  Int
+  negativeCount Int
+  totalReviews  Int
   datasetId   String    @unique
   dataset     Dataset   @relation(fields: [datasetId], references: [id])
   createdAt   DateTime  @default(now())
