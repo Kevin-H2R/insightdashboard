@@ -12,7 +12,6 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -57,4 +56,10 @@ model Analysis {
   datasetId   String    @unique
   dataset     Dataset   @relation(fields: [datasetId], references: [id])
   createdAt   DateTime  @default(now())
+}
+
+model Waitlist {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
 }
